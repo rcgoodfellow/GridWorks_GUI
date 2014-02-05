@@ -1,0 +1,32 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
+PROJECT(GridWorks)
+
+SET(CMAKE_AUTOMOC ON)
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
+FIND_PACKAGE(Qt5Widgets REQUIRED)
+
+SET(CMAKE_CXX_COMPILER clang++)
+SET(CMAKE_C_COMPILER clang++)
+SET(CMAKE_CXX_FLAGS "-std=c++11 -fcolor-diagnostics -Wno-deprecated")
+
+#INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDES})
+#ADD_DEFINITIONS(${Qt5Widgets_DEFINITIONS})
+
+SET(GridWorks_SOURCES MainWindow.cpp GridScene.cpp Widgets.cpp)
+SET(GridWorks_HEADERS GridScene.hpp MainWindow.hpp Grid.hpp)
+
+#QT5_WRAP_CPP(GridWorks_HEADERS_MOC ${GridWorks_HEADERS})
+
+#INCLUDE(${QT_USE_FILE})
+#ADD_DEFINITIONS(${QT_DEFINITIONS})
+
+#set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+
+SET(ICONS_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/icons.qrc)
+qt5_add_resources(ICONS_ADDED ${ICONS_RESOURCES})
+
+ADD_EXECUTABLE(GridWorksApp ${GridWorks_SOURCES} ${GridWorks_HEADERS} 
+                            ${ICONS_ADDED})
+#TARGET_LINK_LIBRARIES(GridWorksApp ${Qt5Widgets_LIBRARIES})
+
+qt5_use_modules(GridWorksApp Widgets)

@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>Art/bus_ico.png</file>
+  <file>Art/line_ico.png</file>
+  <file>Art/tfmr_ico.png</file>
+</qresource>
+</RCC>
