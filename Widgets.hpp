@@ -22,15 +22,17 @@ namespace gw
       QGraphicsScene *m_the_scene;
   };
 
-  class LineWidget : public QAbstractGraphicsShapeItem
+  class LineWidget : public QGraphicsPathItem //QAbstractGraphicsShapeItem
   {
     public:
-      using QAbstractGraphicsShapeItem::QAbstractGraphicsShapeItem;
+      LineWidget(QGraphicsScene*);
       QRectF boundingRect() const;
       void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                  QWidget *widget = nullptr);
+      QPainterPath shape() const;
 
       QPolygonF m_polyline;
+      QGraphicsScene *m_the_scene;
 
   };
 }

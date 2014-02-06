@@ -62,7 +62,7 @@ void IS_Line::handleInsert(QPointF p)
       scene->transitionClickState<CS_Select>();
     }
 
-    theLine = new LineWidget{};
+    theLine = new LineWidget{scene};
     theLine->m_polyline.append(p);
     scene->addItem(theLine);
 

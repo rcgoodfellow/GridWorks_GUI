@@ -60,12 +60,10 @@ void MainWindow::onNewTfmr() {}
 void MainWindow::onNewGen() {}
 void MainWindow::onNewLoad() {}
 
-
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
   if(e->key() == Qt::Key_Escape) { m_scene->transitionClickState<CS_Select>(); }
 }
-
 
 void MainWindow::createToolBar()
 {
