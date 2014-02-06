@@ -49,6 +49,7 @@ void IS_Line::handleInsert(QPointF p)
 
   QGraphicsItem *i{nullptr};
   BusWidget *b{nullptr};
+  Waypoint *wp{nullptr};
   QTransform identity;
 
   if(!theLine)
@@ -64,7 +65,9 @@ void IS_Line::handleInsert(QPointF p)
 
     theLine = new LineWidget{scene};
     theLine->m_polyline.append(p);
+    //wp = new Waypoint(theLine, 0); 
     scene->addItem(theLine);
+    //scene->addItem(wp);
 
     b->m_line_terminals.push_back(
         {BusWidget::WhichTerminal::Front, &theLine->m_polyline}
@@ -83,7 +86,14 @@ void IS_Line::handleInsert(QPointF p)
     b->m_line_terminals.push_back(
         {BusWidget::WhichTerminal::Back, &theLine->m_polyline}
         );
+    return;
   }
+  
+  wp = new Waypoint(theLine, theLine->m_polyline.size() - 1);
+  wp->setPos(p);
+  scene->addItem(wp);
+
+  
 
 
   

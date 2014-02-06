@@ -11,7 +11,6 @@ namespace gw
 {
   class BusWidget : public QGraphicsRectItem
   {
-    QBrush m_brush{QColor::fromRgbF(0.47, 0.47, 0.47)};
     public:
       BusWidget(QGraphicsScene*);
       QVariant itemChange(GraphicsItemChange, const QVariant&);
@@ -20,9 +19,12 @@ namespace gw
       std::vector<std::pair<WhichTerminal, QPolygonF*>> m_line_terminals;
 
       QGraphicsScene *m_the_scene;
+      QBrush m_brush{QColor::fromRgbF(0.47, 0.47, 0.47)};
   };
 
-  class LineWidget : public QGraphicsPathItem //QAbstractGraphicsShapeItem
+  class Waypoint;
+
+  class LineWidget : public QAbstractGraphicsShapeItem
   {
     public:
       LineWidget(QGraphicsScene*);
@@ -34,6 +36,17 @@ namespace gw
       QPolygonF m_polyline;
       QGraphicsScene *m_the_scene;
 
+  };
+  
+  class Waypoint : public QGraphicsRectItem
+  {
+    public:
+      Waypoint(LineWidget*, size_t pos);
+      QVariant itemChange(GraphicsItemChange, const QVariant&);
+    
+      LineWidget *m_the_line; 
+      QBrush m_brush{QColor::fromRgbF(0.47, 0.47, 0.97)};
+      size_t m_pos;
   };
 }
 
