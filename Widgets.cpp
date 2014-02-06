@@ -27,13 +27,11 @@ QVariant BusWidget::itemChange(GraphicsItemChange change, const QVariant &value)
     {
       if(p.first == Front)
       {
-        p.second->pop_front();
-        p.second->push_front(sceneBoundingRect().center());
+        p.second->front() = sceneBoundingRect().center();
       }
       else
       {
-        p.second->pop_back();
-        p.second->push_back(sceneBoundingRect().center());
+        p.second->back() = sceneBoundingRect().center();
       }
     }
   }
