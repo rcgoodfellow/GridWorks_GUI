@@ -6,13 +6,14 @@
 #pragma clang_diagnostic push
 #pragma clang_diagnostic ignored "-Wdeprecated"
 #include <QApplication>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QGraphicsRectItem>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QAction>
+#include <QMainWindow>
+#include <QHBoxLayout>
+#include <QGraphicsView>
+#include <QGraphicsRectItem>
+#include <QButtonGroup>
+#include <QAction>
 #include <QToolBar>
+#include <QKeyEvent>
 #pragma clang_diagnostic pop
 
 #include <iostream>
