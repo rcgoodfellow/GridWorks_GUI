@@ -27,8 +27,10 @@ MainWindow::createMainViewer()
 {
   m_scene = new GridScene(this);
   m_scene_view = new QGraphicsView(m_scene);
-  m_layout->addWidget(m_scene_view);
   m_scene_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  m_scene_view->setRenderHints(QPainter::Antialiasing);
+
+  m_layout->addWidget(m_scene_view);
 }
 
 void MainWindow::setStyle()
@@ -45,13 +47,18 @@ void MainWindow::setStyle()
 
 void MainWindow::onNewBus()
 {
-  std::cout << "New Bus Requested" << std::endl;
-
-  //m_scene->setClickState(GridScene::ClickState::Insert);
   m_scene->transitionClickState<CS_Insert>();
-  //m_scene->setInsertState(GridScene::InsertState::Bus);
   m_scene->transitionInsertState<IS_Bus>();
 }
+
+void MainWindow::onNewLine() 
+{
+  m_scene->transitionClickState<CS_Insert>();
+  m_scene->transitionInsertState<IS_Line>();
+}
+void MainWindow::onNewTfmr() {}
+void MainWindow::onNewGen() {}
+void MainWindow::onNewLoad() {}
 
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
@@ -60,10 +67,6 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
   //m_scene->setClickState(GridScene::ClickState::Select);
 }
 
-void MainWindow::onNewLine() {}
-void MainWindow::onNewTfmr() {}
-void MainWindow::onNewGen() {}
-void MainWindow::onNewLoad() {}
 
 void MainWindow::createToolBar()
 {
