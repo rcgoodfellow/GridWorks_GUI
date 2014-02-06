@@ -63,8 +63,7 @@ void MainWindow::onNewLoad() {}
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
-  //TODO: test for escape and kill
-  //m_scene->setClickState(GridScene::ClickState::Select);
+  if(e->key() == Qt::Key_Escape) { m_scene->transitionClickState<CS_Select>(); }
 }
 
 
