@@ -1,56 +1,71 @@
 #include "MainWindow.hpp"
 
+#include <fstream>
 
 using namespace gw;
 
-
 MainWindow::MainWindow()
 {
-  m_scene = new GridScene(this);
-  //m_scene->addText("GridScene");
+  initWindow();
+  createToolBar();
+  createMainViewer();
+  setStyle();
+}
 
-  setStyleSheet("background: rgba(15, 15, 15, 235);");
-  setAttribute(Qt::WA_TranslucentBackground);
-
-  QVBoxLayout *layout = new QVBoxLayout;
-  m_scene_view = new QGraphicsView(m_scene);
-  m_scene_view->setBackgroundBrush(QColor::fromRgbF(0.17, 0.17, 0.17, 0.1));
-
-  QWidget *widget = new QWidget;
-  widget->setLayout(layout);
-
-  setCentralWidget(widget);
+void MainWindow::initWindow()
+{
+  m_central_widget = new QWidget;
+  m_layout = new QVBoxLayout;
+  m_central_widget->setLayout(m_layout);
+  setCentralWidget(m_central_widget);
   setWindowTitle(tr("GridScene"));
   setUnifiedTitleAndToolBarOnMac(true);
+}
 
-  CreateToolBar();
-  m_toolbar->setStyleSheet("background:transparent;");
+void
+MainWindow::createMainViewer()
+{
+  m_scene = new GridScene(this);
+  m_scene_view = new QGraphicsView(m_scene);
+  m_layout->addWidget(m_scene_view);
+  m_scene_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+}
+
+void MainWindow::setStyle()
+{
+  setStyleSheet("background: rgba(15, 15, 15, 235);");
+  setAttribute(Qt::WA_TranslucentBackground);
+  
+  m_scene_view->setBackgroundBrush(QColor::fromRgbF(0.17, 0.17, 0.17, 0.1));
+  
   m_toolbar->setStyleSheet(
       "QToolButton{ border: 1px solid rgb(255, 255, 255); } "
       "background:transparent; border:1px solid rgb(255, 255, 255);");
-  layout->addWidget(m_toolbar);
-  layout->addWidget(m_scene_view);
-
-  //m_scene->setSceneRect(m_scene_view->rect());
-  m_scene_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 }
 
 void MainWindow::onNewBus()
 {
   std::cout << "New Bus Requested" << std::endl;
 
-  //m_scene->addItem(new BusWidget());
+  //m_scene->setClickState(GridScene::ClickState::Insert);
+  m_scene->transitionClickState<CS_Insert>();
+  //m_scene->setInsertState(GridScene::InsertState::Bus);
+  m_scene->transitionInsertState<IS_Bus>();
+}
 
-  m_scene->click_state = GridScene::ClickState::Insert;
-  m_scene->insert_state = GridScene::InsertState::Bus;
+
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+  //TODO: test for escape and kill
+  //m_scene->setClickState(GridScene::ClickState::Select);
 }
 
 void MainWindow::onNewLine() {}
-void MainWindow::onNewTfrm() {}
+void MainWindow::onNewTfmr() {}
 void MainWindow::onNewGen() {}
 void MainWindow::onNewLoad() {}
 
-void MainWindow::CreateToolBar()
+void MainWindow::createToolBar()
 {
   m_button_group = new QButtonGroup(this);
   m_button_group->setExclusive(false);
@@ -72,6 +87,8 @@ void MainWindow::CreateToolBar()
   m_toolbar->addAction(m_newLineAct);
   m_toolbar->addAction(m_newTfmrAct);
   m_toolbar->setMovable(false);
+  
+  m_layout->addWidget(m_toolbar);
 }
 
 int main(int argc, char **argv)

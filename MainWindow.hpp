@@ -24,8 +24,14 @@ namespace gw
   {
     Q_OBJECT
 
-    GridScene *m_scene;
+    QVBoxLayout *m_layout;
+    QWidget *m_central_widget;
+
+    //Viewer
     QGraphicsView *m_scene_view;
+    GridScene *m_scene;
+
+    //Toolbar
     QButtonGroup *m_button_group;
     QToolBar *m_toolbar;
     QAction *m_newBusAct;
@@ -33,19 +39,24 @@ namespace gw
     QAction *m_newTfmrAct;
     QAction *m_newGenAct;
     QAction *m_newLoadAct;
-    QVBoxLayout *m_layout;
 
-
+    std::string m_stylesheet;
 
     private slots:
       void onNewBus();
       void onNewLine();
-      void onNewTfrm();
+      void onNewTfmr();
       void onNewGen();
       void onNewLoad();
 
     private:
-      void CreateToolBar();
+      void initWindow();
+      void createToolBar();
+      void createMainViewer();
+      void setStyle();
+
+    protected:
+      void keyPressEvent(QKeyEvent *e);
 
     public:
       MainWindow();
