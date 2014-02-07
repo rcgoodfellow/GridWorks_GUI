@@ -9,14 +9,18 @@
 
 namespace gw
 {
+  class LineWidget;
+
   class BusWidget : public QGraphicsRectItem
   {
     public:
       BusWidget(QGraphicsScene*);
+      virtual ~BusWidget();
       QVariant itemChange(GraphicsItemChange, const QVariant&);
 
       enum WhichTerminal { Front, Back };
-      std::vector<std::pair<WhichTerminal, QPolygonF*>> m_line_terminals;
+      std::vector<std::pair<WhichTerminal, LineWidget*>> m_line_terminals;
+      void removeLine(LineWidget*);
 
       QGraphicsScene *m_the_scene;
       QBrush m_brush{QColor::fromRgbF(0.47, 0.47, 0.47)};
@@ -28,6 +32,7 @@ namespace gw
   {
     public:
       LineWidget(QGraphicsScene*);
+      virtual ~LineWidget();
       QRectF boundingRect() const;
       void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                  QWidget *widget = nullptr);
@@ -35,6 +40,7 @@ namespace gw
 
       QPolygonF m_polyline;
       QGraphicsScene *m_the_scene;
+      BusWidget *m_Ta, *m_Tb;
 
   };
   

@@ -61,6 +61,8 @@ namespace gw
 
     public:
       MainWindow();
+
+      void handleDeleteRequest();
   };
 }
 

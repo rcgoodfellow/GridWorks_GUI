@@ -64,13 +64,12 @@ void IS_Line::handleInsert(QPointF p)
     }
 
     theLine = new LineWidget{scene};
+    theLine->m_Ta = b;
     theLine->m_polyline.append(p);
-    //wp = new Waypoint(theLine, 0); 
     scene->addItem(theLine);
-    //scene->addItem(wp);
 
     b->m_line_terminals.push_back(
-        {BusWidget::WhichTerminal::Front, &theLine->m_polyline}
+        {BusWidget::WhichTerminal::Front, theLine}
         );
 
     return;
@@ -84,18 +83,17 @@ void IS_Line::handleInsert(QPointF p)
   if(b) { 
     scene->transitionClickState<CS_Select>(); 
     b->m_line_terminals.push_back(
-        {BusWidget::WhichTerminal::Back, &theLine->m_polyline}
+        {BusWidget::WhichTerminal::Back, theLine}
         );
+    theLine->m_Tb = b;
     return;
   }
   
   wp = new Waypoint(theLine, theLine->m_polyline.size() - 1);
   wp->setPos(p);
-  scene->addItem(wp);
-
-  
-
-
+  //We dont need to do this since the waypoints parent is already in the
+  //scene the waypoint gets added automagically
+  //scene->addItem(wp);
   
 }
 

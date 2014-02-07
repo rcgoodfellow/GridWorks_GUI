@@ -14,6 +14,20 @@ BusWidget::BusWidget(QGraphicsScene *theScene)
   setZValue(10);
 }
 
+
+BusWidget::~BusWidget()
+{
+  for(auto t : m_line_terminals)
+  {
+    if(t.second)
+    {
+      m_the_scene->removeItem(t.second);
+      delete(t.second);
+    }
+  }
+  m_line_terminals.clear();
+}
+
 #include <iostream>
 QVariant BusWidget::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -24,11 +38,11 @@ QVariant BusWidget::itemChange(GraphicsItemChange change, const QVariant &value)
     {
       if(p.first == Front)
       {
-        p.second->front() = sceneBoundingRect().center();
+        p.second->m_polyline.front() = sceneBoundingRect().center();
       }
       else
       {
-        p.second->back() = sceneBoundingRect().center();
+        p.second->m_polyline.back() = sceneBoundingRect().center();
       }
     }
     m_the_scene->invalidate();
@@ -37,15 +51,35 @@ QVariant BusWidget::itemChange(GraphicsItemChange change, const QVariant &value)
   return QGraphicsItem::itemChange(change, value);
 }
 
+void BusWidget::removeLine(LineWidget* l)
+{
+  m_line_terminals.erase(
+      std::remove_if(
+        m_line_terminals.begin(), 
+        m_line_terminals.end(),
+        [l](const std::pair<WhichTerminal, LineWidget*> &elem)
+        { 
+          return elem.second == l; 
+        }
+      )
+  );
+}
+
 LineWidget::LineWidget(QGraphicsScene *parent)
   : QAbstractGraphicsShapeItem(), m_the_scene{parent}
 {
-  setFlag(QGraphicsItem::ItemIsMovable);
+  //setFlag(QGraphicsItem::ItemIsMovable);
   setFlag(QGraphicsItem::ItemIsSelectable);
   setFlag(QGraphicsItem::ItemIsFocusable);
   setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
   setBoundingRegionGranularity(0.75);
   setBrush(QBrush(Qt::transparent));
+}
+
+LineWidget::~LineWidget()
+{
+  m_Ta->removeLine(this);
+  m_Tb->removeLine(this);
 }
 
 QRectF LineWidget::boundingRect() const
@@ -74,7 +108,7 @@ QPainterPath LineWidget::shape() const
 }
 
 Waypoint::Waypoint(LineWidget *lw, size_t pos)
-  : QGraphicsRectItem(-3, -3, 6, 6), m_the_line{lw}, m_pos{pos}
+  : QGraphicsRectItem(-3, -3, 6, 6, lw), m_the_line{lw}, m_pos{pos}
 {
   setBrush(m_brush);
   setFlag(QGraphicsItem::ItemIsMovable);

@@ -63,6 +63,18 @@ void MainWindow::onNewLoad() {}
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
   if(e->key() == Qt::Key_Escape) { m_scene->transitionClickState<CS_Select>(); }
+  if(e->key() == Qt::Key_Delete) { handleDeleteRequest(); }
+}
+
+#include <iostream>
+void MainWindow::handleDeleteRequest()
+{
+  auto selected_items = m_scene->selectedItems();
+  for(auto *i : selected_items)
+  {
+    m_scene->removeItem(i);
+    delete(i);
+  }
 }
 
 void MainWindow::createToolBar()

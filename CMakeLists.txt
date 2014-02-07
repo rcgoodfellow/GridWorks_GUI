@@ -7,7 +7,7 @@ FIND_PACKAGE(Qt5Widgets REQUIRED)
 
 SET(CMAKE_CXX_COMPILER clang++)
 SET(CMAKE_C_COMPILER clang++)
-SET(CMAKE_CXX_FLAGS "-std=c++11 -fcolor-diagnostics -Wno-deprecated")
+SET(CMAKE_CXX_FLAGS "-g -std=c++11 -fcolor-diagnostics -Wno-deprecated")
 
 #INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDES})
 #ADD_DEFINITIONS(${Qt5Widgets_DEFINITIONS})
