@@ -42,6 +42,7 @@ namespace gw
       QPolygonF m_polyline;
       QGraphicsScene *m_the_scene;
       BusWidget *m_Ta, *m_Tb;
+      bool inDestruction{false};
 
   };
   

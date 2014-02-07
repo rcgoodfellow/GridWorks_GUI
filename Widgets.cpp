@@ -78,6 +78,7 @@ LineWidget::LineWidget(QGraphicsScene *parent)
 
 LineWidget::~LineWidget()
 {
+  inDestruction = true;
   m_Ta->removeLine(this);
   m_Tb->removeLine(this);
 }
@@ -109,6 +110,7 @@ QPainterPath LineWidget::shape() const
 
 void LineWidget::removeWaypoint(size_t pos)
 {
+  if(inDestruction) { return; }
   m_polyline.erase(m_polyline.begin() + pos);
 
   for(auto *child : childItems())
@@ -136,7 +138,10 @@ Waypoint::Waypoint(LineWidget *lw, size_t pos)
 
 Waypoint::~Waypoint()
 {
-  m_the_line->removeWaypoint(m_pos);
+  if(m_the_line)
+  {
+    m_the_line->removeWaypoint(m_pos);
+  }
 }
 
 QVariant Waypoint::itemChange(GraphicsItemChange change, const QVariant &value)
