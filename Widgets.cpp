@@ -107,6 +107,21 @@ QPainterPath LineWidget::shape() const
   return stroker.createStroke(path);
 }
 
+void LineWidget::removeWaypoint(size_t pos)
+{
+  m_polyline.erase(m_polyline.begin() + pos);
+
+  for(auto *child : childItems())
+  {
+    Waypoint *wp = dynamic_cast<Waypoint*>(child);
+    if(wp && wp->m_pos > pos) { (wp->m_pos)--; }
+
+  }
+
+  m_the_scene->invalidate();
+
+}
+
 Waypoint::Waypoint(LineWidget *lw, size_t pos)
   : QGraphicsRectItem(-3, -3, 6, 6, lw), m_the_line{lw}, m_pos{pos}
 {
@@ -117,6 +132,11 @@ Waypoint::Waypoint(LineWidget *lw, size_t pos)
   setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 
   setZValue(5);
+}
+
+Waypoint::~Waypoint()
+{
+  m_the_line->removeWaypoint(m_pos);
 }
 
 QVariant Waypoint::itemChange(GraphicsItemChange change, const QVariant &value)

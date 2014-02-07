@@ -37,6 +37,7 @@ namespace gw
       void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                  QWidget *widget = nullptr);
       QPainterPath shape() const;
+      void removeWaypoint(size_t pos);
 
       QPolygonF m_polyline;
       QGraphicsScene *m_the_scene;
@@ -48,6 +49,7 @@ namespace gw
   {
     public:
       Waypoint(LineWidget*, size_t pos);
+      virtual ~Waypoint();
       QVariant itemChange(GraphicsItemChange, const QVariant&);
     
       LineWidget *m_the_line; 
