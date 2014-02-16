@@ -27,13 +27,21 @@ namespace gw
       using GridSceneState::GridSceneState;
 
       virtual void handleClick(QGraphicsSceneMouseEvent*) = 0;
+      virtual void handleRelease(QGraphicsSceneMouseEvent*) = 0;
+      virtual void handleMove(QGraphicsSceneMouseEvent*) { }
   };
 
   struct CS_Select : public ClickState
   {
+    QPointF s0, s1;
+    QGraphicsRectItem *selectionRect;
+    bool dragging{false};
+
     using ClickState::ClickState;
     virtual void init();
     virtual void handleClick(QGraphicsSceneMouseEvent*);
+    virtual void handleRelease(QGraphicsSceneMouseEvent*);
+    virtual void handleMove(QGraphicsSceneMouseEvent*);
   };
 
   struct CS_Insert : public ClickState
@@ -41,6 +49,7 @@ namespace gw
     using ClickState::ClickState;
     virtual void init();
     virtual void handleClick(QGraphicsSceneMouseEvent*);
+    virtual void handleRelease(QGraphicsSceneMouseEvent*);
   };
       
 
@@ -77,7 +86,7 @@ namespace gw
       template <class T>
       void transitionClickState()
       {
-        m_click_state = new T{this}; 
+        m_click_state = new T{this};
         m_click_state->init();
       }
 
@@ -94,6 +103,8 @@ namespace gw
 
     protected:
       void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+      void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+      void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
     private:
 

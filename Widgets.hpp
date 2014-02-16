@@ -9,9 +9,11 @@
 
 namespace gw
 {
+  class GWidget {};
+
   class LineWidget;
 
-  class BusWidget : public QGraphicsRectItem
+  class BusWidget : public GWidget, public QGraphicsRectItem
   {
     public:
       BusWidget(QGraphicsScene*);
@@ -28,7 +30,7 @@ namespace gw
 
   class Waypoint;
 
-  class LineWidget : public QAbstractGraphicsShapeItem
+  class LineWidget : public GWidget, public QAbstractGraphicsShapeItem
   {
     public:
       LineWidget(QGraphicsScene*);
@@ -46,7 +48,7 @@ namespace gw
 
   };
   
-  class Waypoint : public QGraphicsRectItem
+  class Waypoint : public GWidget, public QGraphicsRectItem
   {
     public:
       Waypoint(LineWidget*, size_t pos);

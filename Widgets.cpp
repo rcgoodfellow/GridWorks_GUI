@@ -17,6 +17,7 @@ BusWidget::BusWidget(QGraphicsScene *theScene)
 
 BusWidget::~BusWidget()
 {
+  /*
   for(auto t : m_line_terminals)
   {
     if(t.second)
@@ -25,6 +26,7 @@ BusWidget::~BusWidget()
       delete(t.second);
     }
   }
+  */
   m_line_terminals.clear();
 }
 
@@ -74,6 +76,8 @@ LineWidget::LineWidget(QGraphicsScene *parent)
   setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
   setBoundingRegionGranularity(0.75);
   setBrush(QBrush(Qt::transparent));
+
+  setZValue(5);
 }
 
 LineWidget::~LineWidget()

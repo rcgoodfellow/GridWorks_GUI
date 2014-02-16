@@ -90,7 +90,9 @@ void MainWindow::createToolBar()
   m_newLineAct->setStatusTip(tr("Create New Line"));
   connect(m_newLineAct, SIGNAL(triggered()), this, SLOT(onNewLine()));
   
-  m_newTfmrAct = new QAction(QIcon(":Art/tfmr_ico.png"), tr("&Transformer"), this);
+  m_newTfmrAct = 
+    new QAction(QIcon(":Art/tfmr_ico.png"), tr("&Transformer"), this);
+
   m_newTfmrAct->setStatusTip(tr("Create New Transformer"));
   connect(m_newTfmrAct, SIGNAL(triggered()), this, SLOT(onNewTfmr()));
 

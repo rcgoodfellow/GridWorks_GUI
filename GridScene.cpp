@@ -15,20 +15,78 @@ GridScene::GridScene(QMainWindow *parent)
 void CS_Select::init()
 {
   scene->m_window->setCursor(Qt::ArrowCursor);
+
+  selectionRect = new QGraphicsRectItem;
+  selectionRect->setVisible(false);
+  selectionRect->setBrush(QColor::fromRgbF(1.0, 1.0, 1.0, 0.15));
+  selectionRect->setPen(
+      QPen(QColor::fromRgbF(1.0, 1.0, 1.0, 0.90),
+           1.0, Qt::DotLine)
+      );
+  selectionRect->setZValue(100);
+  
+  scene->addItem(selectionRect);
 }
 
 void
-CS_Select::handleClick(QGraphicsSceneMouseEvent *e) { }
+CS_Select::handleClick(QGraphicsSceneMouseEvent *e) 
+{ 
+  QTransform id;
+
+  GWidget *w = dynamic_cast<GWidget*>(
+      scene->itemAt(e->scenePos(), id)
+      );
+
+  if(!w)
+  {
+    dragging = true;
+    s0 = s1 = e->scenePos();
+    selectionRect->setRect(QRectF{s0, s1});
+    selectionRect->setVisible(true);
+    scene->invalidate();
+  }
+}
+
+void
+CS_Select::handleRelease(QGraphicsSceneMouseEvent *e) 
+{
+  dragging = false;
+  s1 = e->scenePos();
+  selectionRect->setVisible(false);
+  scene->invalidate();
+
+  QTransform ident;
+  QPainterPath pth;
+  pth.addRect(selectionRect->rect());
+
+  scene->setSelectionArea(pth , ident);
+}
+   
+#include <iostream>
+void 
+CS_Select::handleMove(QGraphicsSceneMouseEvent *e)
+{
+  if(dragging)
+  {
+    s1 = e->scenePos();
+    selectionRect->setRect(QRectF{s0, s1});
+    scene->invalidate();
+  }
+}
 
 void CS_Insert::init()
 {
   scene->m_window->setCursor(Qt::CrossCursor);
 }
 
+
 void CS_Insert::handleClick(QGraphicsSceneMouseEvent *e)
 {
   scene->m_insert_state->handleInsert(e->scenePos());  
 }
+
+void
+CS_Insert::handleRelease(QGraphicsSceneMouseEvent *e) {};
 
 void IS_Bus::init() { }
 
@@ -102,4 +160,18 @@ void GridScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
   m_click_state->handleClick(mouseEvent);
 
   QGraphicsScene::mousePressEvent(mouseEvent);
+}
+
+void GridScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+  m_click_state->handleRelease(mouseEvent);
+
+  QGraphicsScene::mouseReleaseEvent(mouseEvent);
+}
+
+void GridScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+  m_click_state->handleMove(mouseEvent);
+
+  QGraphicsScene::mouseMoveEvent(mouseEvent);
 }
